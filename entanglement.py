@@ -47,7 +47,7 @@ class Entanglement:
 
 
     def _get_next_tile(self, row, col, start_direction):
-        end_direction = self.board[row][col].line[start_direction]
+        end_direction = self.board[row][col].line[start_direction][0]
         dr,dc = [(-1,0),(0,1),(1,0),(0,-1)][end_direction // 2]
 
         return row+dr, col+dc, [5,4,7,6,1,0,3,2][end_direction]
@@ -63,13 +63,15 @@ class Entanglement:
     def _follow_path(self):
         count = 1
         current_tile = self.board[self.pos_row][self.pos_col]
-        current_tile.passed.append((self.start_direction, current_tile.line[self.start_direction]))
+        current_pair_num = current_tile.line[self.start_direction][1]
+        current_tile.pair[current_pair_num][2] = True
         next_row, next_col, next_start_direction = self._get_next_tile(self.pos_row, self.pos_col, self.start_direction)
 
         while self.board[next_row][next_col]: # loop until no tile or dead
             count += 1
             current_tile = self.board[next_row][next_col]
-            current_tile.passed.append((next_start_direction, current_tile.line[next_start_direction]))
+            current_pair_num = current_tile.line[next_start_direction][1]
+            current_tile.pair[current_pair_num][2] = True
             next_row, next_col, next_start_direction = self._get_next_tile(next_row, next_col, next_start_direction)
         
         self.pos_row = next_row
@@ -85,7 +87,7 @@ class Entanglement:
         # print("Score:", self.score)
 
         self.new_tile = Tile()
-        self.alternate_tile = Tile()
+        # self.alternate_tile = Tile()
         self.tile_chosen = 0
 
         return self._is_alive()

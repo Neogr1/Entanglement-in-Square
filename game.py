@@ -44,16 +44,17 @@ def draw_tile(screen, tile, row, col):
 
     pg.draw.rect(screen, GREY, (tile_base_x, tile_base_y, SIZE, SIZE))
 
-    for start in range(8):
-        end = tile.line[start]
+    for start, end, passed in tile.pair:
         start_pos = (tile_base_x + PATH_POS_OFFSET[start][0], tile_base_y + PATH_POS_OFFSET[start][1])
         end_pos = (tile_base_x + PATH_POS_OFFSET[end][0], tile_base_y + PATH_POS_OFFSET[end][1])
-        pg.draw.line(screen, WHITE, start_pos, end_pos, width=5)
 
-    for start, end in tile.passed:
-        start_pos = (tile_base_x + PATH_POS_OFFSET[start][0], tile_base_y + PATH_POS_OFFSET[start][1])
-        end_pos = (tile_base_x + PATH_POS_OFFSET[end][0], tile_base_y + PATH_POS_OFFSET[end][1])
-        pg.draw.line(screen, RED, start_pos, end_pos, width=5)
+        color = RED if passed else WHITE
+        pg.draw.line(screen, color, start_pos, end_pos, width=5)
+
+    # for start, end in tile.passed:
+    #     start_pos = (tile_base_x + PATH_POS_OFFSET[start][0], tile_base_y + PATH_POS_OFFSET[start][1])
+    #     end_pos = (tile_base_x + PATH_POS_OFFSET[end][0], tile_base_y + PATH_POS_OFFSET[end][1])
+    #     pg.draw.line(screen, RED, start_pos, end_pos, width=5)
 
 
 
@@ -131,8 +132,7 @@ while True:
     if playing:
         pg.draw.rect(screen, GREY, SWAP_AREA_BASE + (SWAP_AREA_SIZE, SWAP_AREA_SIZE))
         alternate_tile = entanglement.alternate_tile
-        for start in range(8):
-            end = alternate_tile.line[start]
+        for start,end,_ in alternate_tile.pair:
             start_pos = (SWAP_AREA_BASE[0] + 2*PATH_POS_OFFSET[start][0], SWAP_AREA_BASE[1] + 2*PATH_POS_OFFSET[start][1])
             end_pos = (SWAP_AREA_BASE[0] + 2*PATH_POS_OFFSET[end][0], SWAP_AREA_BASE[1] + 2*PATH_POS_OFFSET[end][1])
             pg.draw.line(screen, WHITE, start_pos, end_pos, width=5)

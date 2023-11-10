@@ -5,16 +5,21 @@ class Tile:
 
     def __init__(self):
         shuffle(self.base)
-        pair = [(self.base[i], self.base[i+4]) for i in range(4)]
 
+        self.pair = [[self.base[i], self.base[i+4], False] for i in range(4)] # (dot A, dot B, is passed)
         self.line = [None] * 8
-        self.passed = []
-        for a,b in pair:
-            self.line[a] = b
-            self.line[b] = a
+        for i,(start,end,_) in enumerate(self.pair): # i: to know the what order the line is
+            self.line[start] = [end, i]
+            self.line[end] = [start, i]
 
     def rotate_cw(self):
-        self.line[0],self.line[1],self.line[2],self.line[3],self.line[4],self.line[5],self.line[6],self.line[7] = (self.line[6]+2) % 8, (self.line[7]+2) % 8, (self.line[0]+2) % 8, (self.line[1]+2) % 8, (self.line[2]+2) % 8, (self.line[3]+2) % 8, (self.line[4]+2) % 8, (self.line[5]+2) % 8
+        for line in self.pair:
+            line[0],line[1] = (line[0]+2) % 8,(line[1]+2) % 8
+        self.line[0][0],self.line[1][0],self.line[2][0],self.line[3][0],self.line[4][0],self.line[5][0],self.line[6][0],self.line[7][0] = (self.line[6][0]+2) % 8, (self.line[7][0]+2) % 8, (self.line[0][0]+2) % 8, (self.line[1][0]+2) % 8, (self.line[2][0]+2) % 8, (self.line[3][0]+2) % 8, (self.line[4][0]+2) % 8, (self.line[5][0]+2) % 8
+        self.line[0][1],self.line[1][1],self.line[2][1],self.line[3][1],self.line[4][1],self.line[5][1],self.line[6][1],self.line[7][1] = self.line[6][1], self.line[7][1], self.line[0][1], self.line[1][1], self.line[2][1], self.line[3][1], self.line[4][1], self.line[5][1]
 
     def rotate_ccw(self):
-        self.line[0],self.line[1],self.line[2],self.line[3],self.line[4],self.line[5],self.line[6],self.line[7] = (self.line[2]-2) % 8, (self.line[3]-2) % 8, (self.line[4]-2) % 8, (self.line[5]-2) % 8, (self.line[6]-2) % 8, (self.line[7]-2) % 8, (self.line[0]-2) % 8, (self.line[1]-2) % 8
+        for line in self.pair:
+            line[0],line[1] = (line[0]-2) % 8, (line[1]-2) % 8
+        self.line[0][0],self.line[1][0],self.line[2][0],self.line[3][0],self.line[4][0],self.line[5][0],self.line[6][0],self.line[7][0] = (self.line[2][0]-2) % 8, (self.line[3][0]-2) % 8, (self.line[4][0]-2) % 8, (self.line[5][0]-2) % 8, (self.line[6][0]-2) % 8, (self.line[7][0]-2) % 8, (self.line[0][0]-2) % 8, (self.line[1][0]-2) % 8
+        self.line[0][1],self.line[1][1],self.line[2][1],self.line[3][1],self.line[4][1],self.line[5][1],self.line[6][1],self.line[7][1] = self.line[2][1], self.line[3][1], self.line[4][1], self.line[5][1], self.line[6][1], self.line[7][1], self.line[0][1], self.line[1][1]
