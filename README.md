@@ -2,6 +2,8 @@
 
 Square version of [Entanglement](https://entanglement.gopherwoodstudios.com/) with pygame
 
+<img src="./ingame.png" height="500px" title="ingame_image"/>
+
 ## Execute
 `python3 game.py`
 
